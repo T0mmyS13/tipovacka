@@ -1,0 +1,146 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role     @default(USER)
+
+  // Relations
+  tickets   Ticket[]
+  comments  Comment[]
+
+  @@map("users")
+}
+
+model Tip {
+  id               String     @id @default(cuid())
+  matchInfo        String     // e.g., "Liverpool vs Arsenal"
+  sport            Sport
+  league           String     // e.g., "Premier League"
+  suggestedPick    String     // e.g., "Over 2.5 Goals"
+  odds             Float      // decimal odds
+  winProbability   Float      // percentage 0-100
+  confidenceScore  Int        // 1-10 scale
+  valueScore       Float      // calculated value (probability × odds) - 1
+  matchDate        DateTime
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  status           TipStatus  @default(PENDING)
+  result           TipResult?
+
+  // Additional analysis data
+  analysis         String?    // OTPA analysis, team form, etc.
+  currentOdds      Float?     // for odds movement tracking
+  oddsMovement     OddsMovement @default(STABLE)
+
+  // Relations
+  ticketTips       TicketTip[]
+  comments         Comment[]
+
+  @@map("tips")
+}
+
+model Ticket {
+  id              String       @id @default(cuid())
+  userId          String?      // null for guest tickets
+  user            User?        @relation(fields: [userId], references: [id])
+  totalOdds       Float
+  stake           Float?
+  estimatedPayout Float?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  status          TicketStatus @default(ACTIVE)
+
+  // Relations
+  ticketTips      TicketTip[]
+
+  @@map("tickets")
+}
+
+model TicketTip {
+  id       String @id @default(cuid())
+  ticketId String
+  tipId    String
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  tip      Tip    @relation(fields: [tipId], references: [id])
+
+  @@unique([ticketId, tipId])
+  @@map("ticket_tips")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  userId    String
+  tipId     String
+  user      User     @relation(fields: [userId], references: [id])
+  tip       Tip      @relation(fields: [tipId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@map("comments")
+}
+
+model Settings {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+
+  @@map("settings")
+}
+
+// Enums
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Sport {
+  FOOTBALL
+  TENNIS
+  BASKETBALL
+  BASEBALL
+  HOCKEY
+  SOCCER
+}
+
+enum TipStatus {
+  PENDING
+  WON
+  LOST
+  VOID
+  CANCELLED
+}
+
+enum TipResult {
+  WIN
+  LOSS
+  VOID
+}
+
+enum TicketStatus {
+  ACTIVE
+  WON
+  LOST
+  PARTIALLY_WON
+  CANCELLED
+}
+
+enum OddsMovement {
+  UP
+  DOWN
+  STABLE
+}
