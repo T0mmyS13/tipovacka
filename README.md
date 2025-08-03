@@ -1,36 +1,196 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎯 Tipovačka - Sports Betting Tips Platform
 
-## Getting Started
+A modern web application for sports betting tips and analysis, built with Next.js 15, TypeScript, and Prisma. The platform allows users to view expert betting tips, build betting tickets, and track their betting performance.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **📊 Expert Tips**: View curated sports betting tips with detailed analysis
+- **🎫 Ticket Builder**: Create and manage betting tickets with multiple selections
+- **👤 User Authentication**: Secure registration and login system
+- **📈 Odds Tracking**: Real-time odds monitoring and movement tracking
+- **🏆 Multiple Sports**: Support for various sports and leagues
+- **📱 Responsive Design**: Mobile-first design with dark/light theme support
+- **🔒 Admin Panel**: Administrative interface for tip management
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS, Framer Motion
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: JWT with bcryptjs
+- **Icons**: Lucide React
+- **Themes**: next-themes for dark/light mode
+- **Deployment**: Vercel-ready
+
+## 📋 Prerequisites
+
+- Node.js 18+ 
+- PostgreSQL database
+- npm, yarn, pnpm, or bun
+
+## 🔧 Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd tipovacka
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+
+3. **Set up environment variables**
+   
+   Create a `.env.local` file in the root directory:
+   ```env
+   # Database
+   DATABASE_URL="postgresql://username:password@localhost:5432/tipovacka"
+   
+   # JWT Secret
+   JWT_SECRET="your-super-secret-jwt-key"
+   
+   # Next.js
+   NEXTAUTH_URL="http://localhost:3000"
+   NEXTAUTH_SECRET="your-nextauth-secret"
+   ```
+
+4. **Set up the database**
+   ```bash
+   # Generate Prisma client
+   npm run db:generate
+   
+   # Push database schema
+   npm run db:push
+   
+   # Seed the database (optional)
+   npm run db:seed
+   ```
+
+5. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+## 📁 Project Structure
+
+```
+tipovacka/
+├── prisma/
+│   ├── schema.prisma       # Database schema
+│   └── seed.ts            # Database seeding
+├── src/
+│   ├── app/
+│   │   ├── api/           # API routes
+│   │   ├── auth/          # Authentication pages
+│   │   ├── admin/         # Admin dashboard
+│   │   └── page.tsx       # Home page
+│   ├── components/        # Reusable UI components
+│   ├── contexts/          # React contexts
+│   ├── lib/              # Utility functions
+│   └── types/            # TypeScript type definitions
+├── public/               # Static assets
+└── ...config files
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 Key Components
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Core Features
+- **TipsContainer**: Displays filtered betting tips
+- **TicketBuilder**: Interactive betting slip builder
+- **TipCard**: Individual tip display with analysis
+- **Hero**: Landing page hero section
+- **Navbar**: Navigation with authentication
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Database Models
+- **User**: User accounts with roles (USER/ADMIN)
+- **Tip**: Betting tips with odds, analysis, and tracking
+- **Ticket**: User-created betting combinations
+- **Comment**: User comments and feedback
 
-## Learn More
+## 🔐 Authentication
 
-To learn more about Next.js, take a look at the following resources:
+The app uses JWT-based authentication with the following endpoints:
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/verify` - Token verification
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📊 API Endpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `GET /api/tips` - Fetch betting tips
+- `POST /api/tips` - Create new tip (admin)
+- `GET /api/tickets` - User betting tickets
+- `POST /api/tickets` - Create betting ticket
 
-## Deploy on Vercel
+## 🎨 Styling
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The project uses:
+- **Tailwind CSS** for utility-first styling
+- **Framer Motion** for smooth animations
+- **next-themes** for dark/light mode switching
+- **Lucide React** for consistent iconography
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📝 Available Scripts
+
+```bash
+# Development
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+
+# Database
+npm run db:generate  # Generate Prisma client
+npm run db:push      # Push schema to database
+npm run db:seed      # Seed database with sample data
+```
+
+## 🌐 Deployment
+
+### Vercel (Recommended)
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy automatically on push
+
+### Manual Deployment
+1. Build the application: `npm run build`
+2. Set up PostgreSQL database
+3. Configure environment variables
+4. Start the application: `npm start`
+
+## 🔒 Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `DATABASE_URL` | PostgreSQL connection string | Yes |
+| `JWT_SECRET` | Secret for JWT token signing | Yes |
+| `NEXTAUTH_URL` | Application URL | Yes |
+| `NEXTAUTH_SECRET` | NextAuth secret key | Yes |
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+## 📄 License
+
+This project is private and proprietary.
+
+## 🐛 Issues & Support
+
+For issues and support, please create an issue in the repository or contact the development team.
+
+---
+
+**Built with ❤️ using Next.js and modern web technologies**

@@ -1,4 +1,4 @@
-import { Tip, Ticket, User, Sport, TipStatus, TicketStatus, OddsMovement } from '@prisma/client';
+import { Tip, Ticket, User, Sport } from '@prisma/client';
 
 // Extended types with relations
 export interface TipWithDetails extends Tip {

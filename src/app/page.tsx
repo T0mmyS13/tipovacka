@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { TipsContainer } from "@/components/TipsContainer";
 import { TicketBuilder } from "@/components/TicketBuilder";
 import { Hero } from "@/components/Hero";

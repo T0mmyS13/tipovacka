@@ -10,9 +10,8 @@ import { Loader2 } from 'lucide-react';
 export function TipsContainer() {
   const [tips, setTips] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState<TipFilters>({
-    dateRange: 'today'
-  });
+  const [error, setError] = useState('');
+  const [filters, setFilters] = useState<TipFilters>({});
 
   useEffect(() => {
     fetchTips();
@@ -20,9 +19,10 @@ export function TipsContainer() {
 
   const fetchTips = async () => {
     setLoading(true);
+    setError('');
     try {
       const params = new URLSearchParams();
-
+      
       if (filters.sport) params.append('sport', filters.sport);
       if (filters.dateRange) params.append('dateRange', filters.dateRange);
       if (filters.valueOnly) params.append('valueOnly', 'true');
@@ -32,18 +32,59 @@ export function TipsContainer() {
 
       const response = await fetch(`/api/tips?${params.toString()}`);
       const data = await response.json();
-
+      
       if (data.success) {
         setTips(data.data);
+        console.log('Tips loaded:', data.data.length); // Debug log
       } else {
+        setError('Failed to load tips: ' + data.error);
         console.error('Failed to fetch tips:', data.error);
       }
     } catch (error) {
+      setError('Error loading tips');
       console.error('Error fetching tips:', error);
     } finally {
       setLoading(false);
     }
   };
+
+  const handleAddToTicket = (tip: any) => {
+    // Dispatch custom event for ticket builder
+    window.dispatchEvent(new CustomEvent('addTipToTicket', { detail: tip }));
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          <span className="ml-2 text-gray-600 dark:text-gray-400">Loading tips...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center py-12">
+          <div className="text-red-500 mb-4">⚠️ Error</div>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            Failed to Load Tips
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            {error}
+          </p>
+          <button
+            onClick={fetchTips}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -58,7 +99,7 @@ export function TipsContainer() {
         </div>
 
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          {!loading && (
+          {tips.length > 0 && (
             <span>{tips.length} tip{tips.length !== 1 ? 's' : ''} available</span>
           )}
         </div>
@@ -66,11 +107,7 @@ export function TipsContainer() {
 
       <TipsFilter filters={filters} onFiltersChange={setFilters} />
 
-      {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-        </div>
-      ) : tips.length === 0 ? (
+      {tips.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-gray-400 dark:text-gray-500 mb-4">
             <svg className="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -93,7 +130,7 @@ export function TipsContainer() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
             >
-              <TipCard tip={tip} />
+              <TipCard tip={tip} onAddToTicket={handleAddToTicket} />
             </motion.div>
           ))}
         </div>

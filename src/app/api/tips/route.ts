@@ -22,9 +22,9 @@ export async function GET(request: NextRequest) {
       where.sport = sport;
     }
 
+    // Modified date filtering to be more permissive
     if (dateRange === 'today') {
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -43,7 +43,17 @@ export async function GET(request: NextRequest) {
         gte: tomorrow,
         lt: dayAfter
       };
+    } else if (dateRange === 'week') {
+      const today = new Date();
+      const nextWeek = new Date(today);
+      nextWeek.setDate(nextWeek.getDate() + 7);
+
+      where.matchDate = {
+        gte: today,
+        lt: nextWeek
+      };
     }
+    // If no dateRange or dateRange is not recognized, show all tips
 
     if (minOdds || maxOdds) {
       where.odds = {};
@@ -63,6 +73,8 @@ export async function GET(request: NextRequest) {
       };
     }
 
+    console.log('Tips query filters:', where); // Debug log
+
     const tips = await prisma.tip.findMany({
       where,
       orderBy: [
@@ -78,6 +90,8 @@ export async function GET(request: NextRequest) {
         }
       }
     });
+
+    console.log(`Found ${tips.length} tips`); // Debug log
 
     return NextResponse.json({
       success: true,

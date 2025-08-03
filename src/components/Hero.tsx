@@ -56,7 +56,7 @@ export function Hero() {
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold rounded-lg transition-colors shadow-lg"
               >
-                View Today's Tips
+                View Today&apos;s Tips
               </motion.button>
 
               <motion.button
