@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { LiveSportsDataService } from '@/lib/live-sports-data';
 
 const liveDataService = new LiveSportsDataService();
@@ -18,8 +18,11 @@ export async function POST() {
 
   } catch (error) {
     console.error('Live data update error:', error);
+
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+
     return NextResponse.json(
-      { success: false, error: 'Failed to update live data: ' + error.message },
+      { success: false, error: 'Failed to update live data: ' + errorMessage },
       { status: 500 }
     );
   }

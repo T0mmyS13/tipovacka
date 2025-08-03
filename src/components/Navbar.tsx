@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -36,11 +37,14 @@ export function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <TrendingUp className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-            <span className="text-xl font-bold text-gray-900 dark:text-white">
-              BetAnalyst Pro
-            </span>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/BetAnalyst.png"
+              alt="BetAnalyst"
+              width={1024}
+              height={1024}
+              className="h-48 w-48 object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}

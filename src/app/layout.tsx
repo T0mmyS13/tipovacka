@@ -7,7 +7,7 @@ import { Providers } from "@/components/Providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "BetAnalyst Pro - Professional Betting Platform",
+  title: "BetAnalyst - Professional Betting Platform",
   description:
     "Professional betting analyst platform with daily tips, ticket builder, and advanced analytics",
   keywords: "betting, tips, sports betting, predictions, analytics",
@@ -28,7 +28,7 @@ export default function RootLayout({
             <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8">
               <div className="container mx-auto px-4 text-center text-gray-600 dark:text-gray-400">
                 <p>
-                  &copy; 2025 BetAnalyst Pro. Professional betting analysis
+                  &copy; 2025 Tomáš Svoboda.
                   platform.
                 </p>
               </div>

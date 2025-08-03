@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
+import { TipWithDetails } from '@/types';
 import {
   Plus,
   Trash2,
@@ -20,21 +21,20 @@ export default function AdminPage() {
   const { user } = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('overview');
-  const [tips, setTips] = useState<any[]>([]); // Fix: Add proper typing
+  const [tips, setTips] = useState<TipWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddTipModal, setShowAddTipModal] = useState(false);
 
   useEffect(() => {
-    // Temporarily disable admin check for testing
-    // if (!user) {
-    //   router.push('/auth/login');
-    //   return;
-    // }
+    if (!user) {
+      router.push('/auth/login');
+      return;
+    }
 
-    // if (user.role !== 'ADMIN') {
-    //   router.push('/');
-    //   return;
-    // }
+    if (user.role !== 'ADMIN') {
+      router.push('/');
+      return;
+    }
 
     fetchTips();
   }, [user, router]);
@@ -53,14 +53,13 @@ export default function AdminPage() {
     }
   };
 
-  // Temporarily disable admin check
-  // if (!user || user.role !== 'ADMIN') {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center">
-  //       <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-  //     </div>
-  //   );
-  // }
+  if (!user || user.role !== 'ADMIN') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      </div>
+    );
+  }
 
   const tabs = [
     { id: 'overview', name: 'Overview', icon: BarChart3 },

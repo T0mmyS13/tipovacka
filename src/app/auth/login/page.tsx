@@ -26,8 +26,9 @@ export default function LoginPage() {
     try {
       await login(formData.email, formData.password);
       router.push('/');
-    } catch (err: any) {
-      setError(err.message || 'Login failed');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Login failed';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -147,7 +148,7 @@ export default function LoginPage() {
           <div className="mt-6">
             <div className="text-center">
               <span className="text-sm text-gray-600 dark:text-gray-400">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link href="/auth/register" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300">
                   Create one here
                 </Link>

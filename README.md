@@ -1,6 +1,6 @@
-# 🎯 Tipovačka - Sports Betting Tips Platform
+# 🎯 BetAnalyst - Professional Sports Betting Platform
 
-A modern web application for sports betting tips and analysis, built with Next.js 15, TypeScript, and Prisma. The platform allows users to view expert betting tips, build betting tickets, and track their betting performance.
+A modern web application for professional sports betting analysis and tips, built with Next.js 15, TypeScript, and Prisma. The platform allows users to view expert betting tips, build betting tickets, and track their betting performance with advanced analytics.
 
 ## 🚀 Features
 
@@ -33,7 +33,7 @@ A modern web application for sports betting tips and analysis, built with Next.j
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd tipovacka
+   cd betanalyst
    ```
 
 2. **Install dependencies**
@@ -50,7 +50,7 @@ A modern web application for sports betting tips and analysis, built with Next.j
    Create a `.env.local` file in the root directory:
    ```env
    # Database
-   DATABASE_URL="postgresql://username:password@localhost:5432/tipovacka"
+   DATABASE_URL="postgresql://username:password@localhost:5432/betanalyst"
    
    # JWT Secret
    JWT_SECRET="your-super-secret-jwt-key"
@@ -82,7 +82,7 @@ A modern web application for sports betting tips and analysis, built with Next.j
 ## 📁 Project Structure
 
 ```
-tipovacka/
+betanalyst/
 ├── prisma/
 │   ├── schema.prisma       # Database schema
 │   └── seed.ts            # Database seeding
@@ -99,6 +99,10 @@ tipovacka/
 ├── public/               # Static assets
 └── ...config files
 ```
+
+## 🎯 BetAnalyst Pro
+
+Professional betting analysis platform with real-time data integration and advanced statistical modeling.
 
 ## 🎯 Key Components
 
